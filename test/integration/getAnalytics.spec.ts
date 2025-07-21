@@ -6,8 +6,7 @@ import { BAYC_CONTRACT_ADDRESS, BAYC_TOKEN_IDS } from "../utils/constants";
 
 suite("OpenSeaAPI / getAnalytics", function () {
   test("Get general activity events", async () => {
-    const response = await sdk.api.getActivity(
-      undefined,
+    const response = await sdk.api.getEvents(
       [ActivityEventType.SALE, ActivityEventType.TRANSFER],
       5,
     );

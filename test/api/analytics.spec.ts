@@ -6,8 +6,7 @@ import { api, BAYC_CONTRACT_ADDRESS } from "../utils/constants";
 
 suite("Analytics API", () => {
   test("Get activity events", async () => {
-    const response = await api.getActivity(
-      undefined,
+    const response = await api.getEvents(
       [ActivityEventType.SALE, ActivityEventType.TRANSFER],
       10,
     );

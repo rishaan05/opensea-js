@@ -21,7 +21,7 @@ import {
   getBestListingsAPIPath,
   getCancelOrderPath,
   getTraitOffersPath,
-  getActivityPath,
+  getEventsPath,
   getEventsByCollectionPath,
   getEventsByNFTPath,
   getEventsByAccountPath,
@@ -281,7 +281,6 @@ export class OpenSeaAPI {
 
   /**
    * Gets activity events.
-   * @param collection The collection slug to filter by (optional).
    * @param eventTypes Array of event types to filter by (optional).
    * @param limit The maximum number of activity events to return.
    * @param next The cursor for the next page of results.
@@ -289,16 +288,14 @@ export class OpenSeaAPI {
    * @param before Timestamp in seconds to get events before.
    * @returns The {@link GetActivityResponse} returned by the API.
    */
-  public async getActivity(
-    collection?: string,
+  public async getEvents(
     eventTypes?: ActivityEventType[],
     limit?: number,
     next?: string,
     after?: number,
     before?: number,
   ): Promise<GetActivityResponse> {
-    const response = await this.get<GetActivityResponse>(getActivityPath(), {
-      collection_slug: collection,
+    const response = await this.get<GetActivityResponse>(getEventsPath(), {
       event_type: eventTypes,
       limit,
       next,

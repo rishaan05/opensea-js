@@ -108,7 +108,7 @@ export const getTraitOffersPath = (collectionSlug: string) => {
   return `/api/v2/offers/collection/${collectionSlug}/traits`;
 };
 
-export const getActivityPath = () => {
+export const getEventsPath = () => {
   return `/api/v2/events`;
 };
 
