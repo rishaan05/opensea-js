@@ -308,3 +308,84 @@ export enum TraitDisplayType {
   /** "None" is used for string traits */
   NONE = "None",
 }
+
+/**
+ * Activity event types returned by OpenSea API.
+ * @category API Models
+ */
+export enum ActivityEventType {
+  LISTING = "listing",
+  OFFER = "offer",
+  COLLECTION_OFFER = "collection_offer",
+  TRAIT_OFFER = "trait_offer",
+  SALE = "sale",
+  TRANSFER = "transfer",
+  MINT = "mint",
+  BURN = "burn",
+  BID = "bid",
+}
+
+/**
+ * Activity event returned by OpenSea API.
+ * @category API Models
+ */
+export type ActivityEvent = {
+  /** The type of event */
+  event_type: ActivityEventType;
+  /** The order hash if applicable */
+  order_hash?: string;
+  /** The order type */
+  order_type?: OrderType;
+  /** The chain */
+  chain: string;
+  /** The protocol address */
+  protocol_address?: string;
+  /** Timestamp of when the event occurred */
+  event_timestamp: number;
+  /** The NFT involved in the event */
+  nft?: {
+    identifier: string;
+    collection: string;
+    contract: string;
+    token_standard: string;
+    name: string;
+    image_url: string;
+    metadata_url: string;
+    opensea_url: string;
+    updated_at: string;
+    is_disabled: boolean;
+    is_nsfw: boolean;
+  };
+  /** The quantity involved */
+  quantity: number;
+  /** The seller account */
+  seller?: string;
+  /** The buyer account */
+  buyer?: string;
+  /** The maker of the order */
+  maker?: string;
+  /** The taker of the order */
+  taker?: string;
+  /** Payment details */
+  payment?: {
+    quantity: string;
+    token_address: string;
+    decimals: number;
+    symbol: string;
+  };
+  /** Transaction details */
+  transaction?: {
+    hash: string;
+    timestamp: number;
+  };
+  /** Criteria for collection/trait offers */
+  criteria?: Criteria;
+};
+
+/**
+ * Response from the activity endpoint.
+ * @category API Response Types
+ */
+export type GetActivityResponse = {
+  asset_events: ActivityEvent[];
+} & QueryCursors;

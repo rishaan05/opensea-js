@@ -21,6 +21,10 @@ import {
   getBestListingsAPIPath,
   getCancelOrderPath,
   getTraitOffersPath,
+  getActivityPath,
+  getEventsByCollectionPath,
+  getEventsByNFTPath,
+  getEventsByAccountPath,
 } from "./apiPaths";
 import {
   BuildOfferResponse,
@@ -38,6 +42,8 @@ import {
   CollectionOrderByOption,
   CancelOrderResponse,
   GetCollectionsArgs,
+  GetActivityResponse,
+  ActivityEventType,
 } from "./types";
 import { API_BASE_MAINNET, API_BASE_TESTNET } from "../constants";
 import {
@@ -268,6 +274,134 @@ export class OpenSeaAPI {
         next,
         float_value: floatValue,
         int_value: intValue,
+      },
+    );
+    return response;
+  }
+
+  /**
+   * Gets activity events.
+   * @param collection The collection slug to filter by (optional).
+   * @param eventTypes Array of event types to filter by (optional).
+   * @param limit The maximum number of activity events to return.
+   * @param next The cursor for the next page of results.
+   * @param after Timestamp in seconds to get events after.
+   * @param before Timestamp in seconds to get events before.
+   * @returns The {@link GetActivityResponse} returned by the API.
+   */
+  public async getActivity(
+    collection?: string,
+    eventTypes?: ActivityEventType[],
+    limit?: number,
+    next?: string,
+    after?: number,
+    before?: number,
+  ): Promise<GetActivityResponse> {
+    const response = await this.get<GetActivityResponse>(getActivityPath(), {
+      collection_slug: collection,
+      event_type: eventTypes,
+      limit,
+      next,
+      after,
+      before,
+    });
+    return response;
+  }
+
+  /**
+   * Gets activity events for a specific collection.
+   * @param collectionSlug The slug of the collection.
+   * @param eventTypes Array of event types to filter by (optional).
+   * @param limit The maximum number of activity events to return.
+   * @param next The cursor for the next page of results.
+   * @param after Timestamp in seconds to get events after.
+   * @param before Timestamp in seconds to get events before.
+   * @returns The {@link GetActivityResponse} returned by the API.
+   */
+  public async getEventsByCollection(
+    collectionSlug: string,
+    eventTypes?: ActivityEventType[],
+    limit?: number,
+    next?: string,
+    after?: number,
+    before?: number,
+  ): Promise<GetActivityResponse> {
+    const response = await this.get<GetActivityResponse>(
+      getEventsByCollectionPath(collectionSlug),
+      {
+        event_type: eventTypes,
+        limit,
+        next,
+        after,
+        before,
+      },
+    );
+    return response;
+  }
+
+  /**
+   * Gets activity events for a specific NFT.
+   * @param address The NFT's contract address.
+   * @param identifier The identifier of the NFT (i.e. Token ID).
+   * @param chain The NFT's chain.
+   * @param eventTypes Array of event types to filter by (optional).
+   * @param limit The maximum number of activity events to return.
+   * @param next The cursor for the next page of results.
+   * @param after Timestamp in seconds to get events after.
+   * @param before Timestamp in seconds to get events before.
+   * @returns The {@link GetActivityResponse} returned by the API.
+   */
+  public async getEventsByNFT(
+    address: string,
+    identifier: string,
+    chain: Chain = this.chain,
+    eventTypes?: ActivityEventType[],
+    limit?: number,
+    next?: string,
+    after?: number,
+    before?: number,
+  ): Promise<GetActivityResponse> {
+    const response = await this.get<GetActivityResponse>(
+      getEventsByNFTPath(chain, address, identifier),
+      {
+        event_type: eventTypes,
+        limit,
+        next,
+        after,
+        before,
+      },
+    );
+    return response;
+  }
+
+  /**
+   * Gets activity events for a specific account.
+   * @param address The account address.
+   * @param chain The chain to query.
+   * @param eventTypes Array of event types to filter by (optional).
+   * @param limit The maximum number of activity events to return.
+   * @param next The cursor for the next page of results.
+   * @param after Timestamp in seconds to get events after.
+   * @param before Timestamp in seconds to get events before.
+   * @returns The {@link GetActivityResponse} returned by the API.
+   */
+  public async getEventsByAccount(
+    address: string,
+    chain: Chain = this.chain,
+    eventTypes?: ActivityEventType[],
+    limit?: number,
+    next?: string,
+    after?: number,
+    before?: number,
+  ): Promise<GetActivityResponse> {
+    const response = await this.get<GetActivityResponse>(
+      getEventsByAccountPath(chain, address),
+      {
+        event_type: eventTypes,
+        limit,
+        next,
+        after,
+        before,
       },
     );
     return response;
